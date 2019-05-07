@@ -38,13 +38,13 @@ export default {
       let matched = this.$route.matched.filter(
         item => item.meta && item.meta.title
       );
-      const first = matched[0];
-
-      if (!this.isDashboard(first)) {
-        matched = [{ path: "/dashboard", meta: { title: "dashboard" } }].concat(
-          matched
-        );
-      }
+      //  去除首页面包屑不是dashboard，或者不存在的时候依然显示一个空的面包屑的问题
+      // const first = matched[0];
+      // if (!this.isDashboard(first)) {
+      //   matched = [{ path: "/dashboard", meta: { title: "dashboard" } }].concat(
+      //     matched
+      //   );
+      // }
 
       this.levelList = matched.filter(
         item => item.meta && item.meta.title && item.meta.breadcrumb !== false
