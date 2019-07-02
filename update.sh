@@ -11,6 +11,5 @@ if [ $# = 1 ]  ; then
 echo $success;
 else 
 echo $fail; 
-#调用windows弹窗提示
-./toast.cmd  "git commit-m 未提交描述错误" $fail
+
 fi
