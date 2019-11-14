@@ -1,12 +1,12 @@
 <template>
-  <div class="card-link cursor-pointer" @click="handleClick()" :style="objectStyle">
-    <a :title="title" :alt='title' class="card-link-pointer">
-      <i class="fa fa-external-link margin-left-10 link-icon"></i>
+  <div class="card-link cursor-pointer" :style="objectStyle" @click="handleClick()">
+    <a :title="title" :alt="title" class="card-link-pointer">
+      <i class="fa fa-external-link margin-left-10 link-icon" />
       <div class="card-link-icon-wrapper" :style="iconColorStyle">
-        <slot class="card-link-icon"></slot>
+        <slot class="card-link-icon" />
       </div>
       <div class="card-link-icon-decription">
-        <div class="card-link-text">{{title}}</div>
+        <div class="card-link-text">{{ title }}</div>
       </div>
     </a>
   </div>
@@ -31,23 +31,23 @@ export default {
     return {
       // 设置样式
       objectStyle: {
-        width: this.width + "px",
-        background: "#fff"
+        width: this.width + 'px',
+        background: '#fff'
       },
       // 卡片颜色
       iconColorStyle: {
         color: this.color,
-        background: "#fff"
+        background: '#fff'
       }
-    };
+    }
   },
   methods: {
     // 点击事件
     handleClick() {
-      this.$emit("handleClick", this.title);
+      this.$emit('handleClick', this.title)
     }
   }
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

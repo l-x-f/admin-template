@@ -7,15 +7,15 @@
       @toggleClick="toggleSideBar"
     />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'"></template>
+      <template v-if="device!=='mobile'" />
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="logo" class="user-avatar"  >
-          <i class="el-icon-caret-bottom"/>
+          <img :src="logo" class="user-avatar">
+          <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item divided>
@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Breadcrumb from "@/components/Breadcrumb";
-import Hamburger from "@/components/Hamburger";
-const logo = process.env.VUE_APP_LOGO;
+import { mapGetters } from 'vuex'
+import Breadcrumb from '@/components/Breadcrumb'
+import Hamburger from '@/components/Hamburger'
+const logo = process.env.VUE_APP_LOGO
 export default {
   components: {
     Breadcrumb,
@@ -39,26 +39,26 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["sidebar", "name", "avatar", "device"])
+    ...mapGetters(['sidebar', 'name', 'avatar', 'device'])
   },
   data() {
     return {
       logo
-    };
+    }
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch("app/toggleSideBar");
+      this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch("user/logout");
+      await this.$store.dispatch('user/logout')
       this.$router.push({
         path: `/login`
         // path: `/login?redirect=${this.$route.fullPath}`
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

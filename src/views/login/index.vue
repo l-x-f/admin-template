@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">{{title}}</h3>
+        <h3 class="title">{{ title }}</h3>
       </div>
 
       <el-form-item prop="username">
@@ -60,55 +60,55 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
-import defaultSettings from "@/settings";
-import axios from "axios";
+import { validUsername } from '@/utils/validate'
+import defaultSettings from '@/settings'
+import axios from 'axios'
 export default {
-  name: "Login",
-  computed: {
-    title() {
-      return defaultSettings.title;
-    }
-  },
+  name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error("请输入合法的用户名"));
+        callback(new Error('请输入合法的用户名'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("密码长度不得小于六位"));
+        callback(new Error('密码长度不得小于六位'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       loginForm: {
-        username: "admin",
-        password: "111111"
+        username: 'admin',
+        password: '111111'
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername }
+          { required: true, trigger: 'blur', validator: validateUsername }
         ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword }
+          { required: true, trigger: 'blur', validator: validatePassword }
         ]
       },
-      passwordType: "password",
+      passwordType: 'password',
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined
-    };
+    }
+  },
+  computed: {
+    title() {
+      return defaultSettings.title
+    }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
@@ -117,10 +117,10 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.username === "") {
-      this.$refs.username.focus();
-    } else if (this.loginForm.password === "") {
-      this.$refs.password.focus();
+    if (this.loginForm.username === '') {
+      this.$refs.username.focus()
+    } else if (this.loginForm.password === '') {
+      this.$refs.password.focus()
     }
   },
   destroyed() {
@@ -130,55 +130,55 @@ export default {
     checkCapslock({ shiftKey, key } = {}) {
       if (key && key.length === 1) {
         if (
-          (shiftKey && (key >= "a" && key <= "z")) ||
-          (!shiftKey && (key >= "A" && key <= "Z"))
+          (shiftKey && (key >= 'a' && key <= 'z')) ||
+          (!shiftKey && (key >= 'A' && key <= 'Z'))
         ) {
-          this.capsTooltip = true;
+          this.capsTooltip = true
         } else {
-          this.capsTooltip = false;
+          this.capsTooltip = false
         }
       }
-      if (key === "CapsLock" && this.capsTooltip === true) {
-        this.capsTooltip = false;
+      if (key === 'CapsLock' && this.capsTooltip === true) {
+        this.capsTooltip = false
       }
     },
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           try {
-            this.loading = true;
-            let res = await this.$store.dispatch("user/login", this.loginForm);
-            this.$router.push({ path: "/user/index" });
+            this.loading = true
+            const res = await this.$store.dispatch('user/login', this.loginForm)
+            this.$router.push({ path: '/user/index' })
           } catch (error) {
             this.$message({
-              message: "账号或密码错误，请重试 ！",
-              type: "error",
+              message: '账号或密码错误，请重试 ！',
+              type: 'error',
               duraton: 3e3,
               onClose: () => {
-                location.reload();
-                location.href = "#/login";
+                location.reload()
+                location.href = '#/login'
               }
-            });
+            })
           }
-          this.loading = false;
+          this.loading = false
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

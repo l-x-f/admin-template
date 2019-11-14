@@ -1,12 +1,12 @@
 <template>
-  <div v-loading="loading" v-html="html" class="content"></div>
+  <div v-loading="loading" class="content" v-html="html" />
 </template>
 <style>
 </style>
 <script>
 // 显示html路径的组件
 // import axios from "axios";
-const axios = require('axios');
+const axios = require('axios')
 export default {
   // 使用时请使用 :url.sync=""传值
   props: {
@@ -17,39 +17,39 @@ export default {
   data() {
     return {
       loading: false,
-      html: ""
-    };
+      html: ''
+    }
   },
   watch: {
     url(value) {
-      this.load(value);
+      this.load(value)
     }
   },
   mounted() {
-    this.load(this.url);
+    this.load(this.url)
   },
   methods: {
     load(url) {
       if (url && url.length > 0) {
         // 加载中
-        this.loading = true;
+        this.loading = true
         axios
           .get(url)
           .then(response => {
-            this.loading = false;
+            this.loading = false
             // 处理HTML显示
-            this.html = response.data;
-            this.$emit("subFormatToHtml", this.html);
+            this.html = response.data
+            this.$emit('subFormatToHtml', this.html)
           })
           .catch(() => {
-            this.loading = false;
-            this.html = "服务器数据加载失败，请重试!";
-            this.$emit("subFormatToHtml", this.html);
-          });
+            this.loading = false
+            this.html = '服务器数据加载失败，请重试!'
+            this.$emit('subFormatToHtml', this.html)
+          })
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" >

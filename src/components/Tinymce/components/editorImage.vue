@@ -1,21 +1,21 @@
 <template>
   <div class="upload-container">
     <el-tooltip class="item" effect="dark" content="上传图片" placement="bottom" :hide-after="800">
-      <el-button @click="showDialog" icon="el-icon-upload" size="mini" type="primary">上传图片</el-button>
+      <el-button icon="el-icon-upload" size="mini" type="primary" @click="showDialog">上传图片</el-button>
     </el-tooltip>
     <el-dialog title="上传图片" append-to-body width="50%" :visible.sync="dialogVisible" center>
       <!-- <el-upload class="editor-slide-upload" action="https://httpbin.org/post" :multiple="false" :file-list="fileList" :show-file-list="true" list-type="picture-card" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>-->
       <div class="img-box">
-        <img class="img" :src="imgSrc" alt v-if="imgSrc">
+        <img v-if="imgSrc" class="img" :src="imgSrc" alt>
       </div>
       <div class="uploadImg-box">
         <input
+          ref="fileElem"
           title=" "
           class="img-input"
           type="file"
-          ref="fileElem"
           name="img"
           @change="uploadImg"
         >
@@ -34,31 +34,31 @@
 // import { getToken } from 'api/qiniu'
 
 export default {
-  name: "editorSlideUpload",
+  name: 'EditorSlideUpload',
   props: {
     color: {
       type: String,
-      default: "#f4d020"
+      default: '#f4d020'
     }
   },
   data() {
     return {
       dialogVisible: false,
-      imgSrc: "",
+      imgSrc: '',
       listObj: {},
       fileList: [],
       file: null
-    };
+    }
   },
   methods: {
     checkAllSuccess() {
       return Object.keys(this.listObj).every(
         item => this.listObj[item].hasSuccess
-      );
+      )
     },
     showDialog() {
-      this.dialogVisible = true;
-      this.imgSrc = "";
+      this.dialogVisible = true
+      this.imgSrc = ''
     },
     handleSubmit() {
       // const arr = Object.keys(this.listObj).map(v => this.listObj[v]);
@@ -69,79 +69,79 @@ export default {
       //   return;
       // }
       // console.log(arr);
-      this.$emit("success", { urlData: this.imgSrc, file: this.file });
+      this.$emit('success', { urlData: this.imgSrc, file: this.file })
       // this.listObj = {};
       // this.fileList = [];
-      this.dialogVisible = false;
+      this.dialogVisible = false
     },
     handleSuccess(response, file) {
-      const uid = file.uid;
-      const objKeyArr = Object.keys(this.listObj);
+      const uid = file.uid
+      const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file;
-          this.listObj[objKeyArr[i]].hasSuccess = true;
-          return;
+          this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].hasSuccess = true
+          return
         }
       }
     },
     handleRemove(file) {
-      const uid = file.uid;
-      const objKeyArr = Object.keys(this.listObj);
+      const uid = file.uid
+      const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          delete this.listObj[objKeyArr[i]];
-          return;
+          delete this.listObj[objKeyArr[i]]
+          return
         }
       }
     },
     beforeUpload(file) {
-      const _self = this;
-      const _URL = window.URL || window.webkitURL;
-      const fileName = file.uid;
-      this.listObj[fileName] = {};
+      const _self = this
+      const _URL = window.URL || window.webkitURL
+      const fileName = file.uid
+      this.listObj[fileName] = {}
       return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = _URL.createObjectURL(file);
+        const img = new Image()
+        img.src = _URL.createObjectURL(file)
         img.onload = function() {
           _self.listObj[fileName] = {
             hasSuccess: false,
             uid: file.uid,
             width: this.width,
             height: this.height
-          };
-        };
-        resolve(true);
-      });
+          }
+        }
+        resolve(true)
+      })
     },
     uploadImg() {
       // let img = this.$refs.imgAvatar;
-      //console.log(fileElem)
-      let files = this.$refs.fileElem.files;
-      this.file = files[0];
-      console.log(this.file, "file");
-      let reader = new FileReader();
-      let that = this;
+      // console.log(fileElem)
+      const files = this.$refs.fileElem.files
+      this.file = files[0]
+      console.log(this.file, 'file')
+      const reader = new FileReader()
+      const that = this
       if (files[0].size > 1024 * 1024 * 5) {
         this.$message({
-          message: "图片不得大于5M",
-          type: "warning",
+          message: '图片不得大于5M',
+          type: 'warning',
           duration: 2000
-        });
-        return;
+        })
+        return
       }
       // console.log(files[0].size, "files[0]");
-      reader.readAsDataURL(files[0]);
+      reader.readAsDataURL(files[0])
       reader.onload = function(e) {
-        //头像上传完成回调
+        // 头像上传完成回调
 
         // console.log(reader.result,'reader.result')
-        that.imgSrc = reader.result;
+        that.imgSrc = reader.result
         // that.$emit("successCBK", reader.result);
-      };
+      }
     }
   }
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

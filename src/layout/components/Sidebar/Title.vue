@@ -12,24 +12,24 @@
 </template>
 
 <script>
-import defaultSettings from "@/settings";
+import defaultSettings from '@/settings'
 export default {
-  name: "SidebarLogo",
+  name: 'SidebarLogo',
   props: {
     collapse: {
       type: Boolean,
       required: true
     }
   },
+  data() {
+    return {}
+  },
   computed: {
     title() {
-      return defaultSettings.title;
+      return defaultSettings.title
     }
-  },
-  data() {
-    return {};
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

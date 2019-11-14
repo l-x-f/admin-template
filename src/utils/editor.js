@@ -2,8 +2,8 @@ import {
   Bucket,
   Region,
   cos
-} from "@/utils/cos";
-import { isInArray } from "@/utils/index";
+} from '@/utils/cos'
+import { isInArray } from '@/utils/index'
 
 // import {
 //   Message
@@ -72,38 +72,38 @@ const toolOptions = [
 // handler重写事件, 任何工具按钮的功能都可以重写，这里只重写图片上传事件
 const handlers = {
   image: function image() {
-    var self = this;
-    var fileInput = this.container.querySelector('input.ql-image[type=file]');
+    var self = this
+    var fileInput = this.container.querySelector('input.ql-image[type=file]')
     if (fileInput == null) {
-      fileInput = document.createElement('input');
-      fileInput.setAttribute('type', 'file');
+      fileInput = document.createElement('input')
+      fileInput.setAttribute('type', 'file')
       // 设置图片参数名
       if (uploadConfig.name) {
-        fileInput.setAttribute('name', uploadConfig.name);
+        fileInput.setAttribute('name', uploadConfig.name)
       }
 
       // 可设置上传图片的格式
-      fileInput.setAttribute('accept', uploadConfig.accept);
-      fileInput.classList.add('ql-image');
+      fileInput.setAttribute('accept', uploadConfig.accept)
+      fileInput.classList.add('ql-image')
       // 监听选择文件
-      fileInput.addEventListener('change', function () {
+      fileInput.addEventListener('change', function() {
         // 如果图片限制大小
         // console.log(fileInput.files[0])
         if (uploadConfig.size && fileInput.files[0].size >= uploadConfig.size * 1024) {
           fileInput.value = ''
           window.ELEMENT.Message({
-            message: "上传图片的尺寸最大不能超过5M!",
+            message: '上传图片的尺寸最大不能超过5M!',
             type: 'error',
             duration: 3 * 1000
           })
           return
         }
         // 图片限制类型
-        let accept = ['image/png', 'image/gif', 'image/jpeg', 'image/bmp', 'image/x-icon'];
+        const accept = ['image/png', 'image/gif', 'image/jpeg', 'image/bmp', 'image/x-icon']
         // console.log(accept,fileInput.files[0])
-        if (!isInArray(accept,fileInput.files[0].type)) {         
+        if (!isInArray(accept, fileInput.files[0].type)) {
           window.ELEMENT.Message({
-            message: "上传图片格式不正确",
+            message: '上传图片格式不正确',
             type: 'error',
             duration: 3 * 1000
           })
@@ -115,37 +115,33 @@ const handlers = {
         //   // 图片质量
         //   quality: 1
         // }).then(res => {
-          // console.log(res, 'lrzres')
-          // cos图片上传
-          cos.sliceUploadFile({
-              Bucket: Bucket,
-              Region: Region,
-              Key: getUploadPathTimestamp(fileInput.files[0].name),
-              Body: res.file
-            },
-            (err, data) => {
-              if (!err) {
-                // console.log(data, 'cosdata')
-                // 把成功后的url插入组件
-                var length = self.quill.getSelection(true).index;
-                self.quill.insertEmbed(length, 'image', "https://" + data.Location);
-                self.quill.setSelection(length + 1);
-              } else {
-                // console.log(err, 'coserr')
-              }
-            }
-          );
+        // console.log(res, 'lrzres')
+        // cos图片上传
+        cos.sliceUploadFile({
+          Bucket: Bucket,
+          Region: Region,
+          Key: getUploadPathTimestamp(fileInput.files[0].name),
+          Body: res.file
+        },
+        (err, data) => {
+          if (!err) {
+            // console.log(data, 'cosdata')
+            // 把成功后的url插入组件
+            var length = self.quill.getSelection(true).index
+            self.quill.insertEmbed(length, 'image', 'https://' + data.Location)
+            self.quill.setSelection(length + 1)
+          } else {
+            // console.log(err, 'coserr')
+          }
+        }
+        )
         // }).catch(err => {
         //   // console.log('图片压缩失败' + err)
         // })
-
-
-      });
-      this.container.appendChild(fileInput);
-
-
+      })
+      this.container.appendChild(fileInput)
     }
-    fileInput.click();
+    fileInput.click()
   }
 }
 
@@ -166,39 +162,39 @@ export const editorOptions = {
     }
   },
   ops: [{
-      insert: 'Gandalf',
-      attributes: {
-        bold: true
-      }
-    },
-    {
-      insert: ' the '
-    },
-    {
-      insert: 'Grey',
-      attributes: {
-        color: '#cccccc'
-      }
+    insert: 'Gandalf',
+    attributes: {
+      bold: true
     }
+  },
+  {
+    insert: ' the '
+  },
+  {
+    insert: 'Grey',
+    attributes: {
+      color: '#cccccc'
+    }
+  }
   ]
 }
 
 // 文件时间戳 eg.20180103.bmp
 export function getUploadPathTimestamp(fileName, suffix) {
   // 文件名字
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  var time = date.toTimeString();
-  time = time.substr(0, 8);
-  time = time.replace(/:/g, "");
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  var time = date.toTimeString()
+  time = time.substr(0, 8)
+  time = time.replace(/:/g, '')
   // 后缀
   if (suffix) {
-    suffix = '.' + suffix;
+    suffix = '.' + suffix
   } else {
-    const pos = fileName.lastIndexOf(".");
-    suffix = fileName.substr(pos, fileName.length - pos);
+    const pos = fileName.lastIndexOf('.')
+    suffix = fileName.substr(pos, fileName.length - pos)
   }
-  return 'pc' + "/" + year + (month < 10 ? '0' + month : String(month)) + (day < 10 ? '0' + day : String(day)) + time + suffix;
+  return 'pc' + '/' + year + (month < 10 ? '0' + month : String(month)) + (day < 10 ? '0' + day : String(day)) + time + suffix
 }

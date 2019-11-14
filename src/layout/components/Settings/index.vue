@@ -5,7 +5,7 @@
 
       <div class="drawer-item">
         <span>{{ ('settings.theme') }}</span>
-      
+
       </div>
 
       <div class="drawer-item">
@@ -30,7 +30,7 @@
 <script>
 
 export default {
-  components: {  },
+  components: { },
   data() {
     return {}
   },

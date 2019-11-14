@@ -1,10 +1,10 @@
-import Vue from 'vue';
+import Vue from 'vue'
 const requireComponent = require.context('.', true, /\.vue$/)
 // console.log(requireComponent)
 // console.log(requireComponent.resolve())
 requireComponent.keys().forEach(
   (filePath) => {
-    let componentName = (filePath.substring(2)).split('.')[0];  
+    const componentName = (filePath.substring(2)).split('.')[0]
     Vue.component(componentName, requireComponent(filePath).default)
   }
 )

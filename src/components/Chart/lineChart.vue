@@ -1,26 +1,26 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"></div>
+  <div :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
 // import echarts from "echarts";
-const echarts = require("echarts");
+const echarts = require('echarts')
 
-import { debounce } from "@/utils";
+import { debounce } from '@/utils'
 
 export default {
   props: {
     className: {
       type: String,
-      default: "chart"
+      default: 'chart'
     },
     width: {
       type: String,
-      default: "100%"
+      default: '100%'
     },
     height: {
       type: String,
-      default: "350px"
+      default: '350px'
     },
     autoResize: {
       type: Boolean,
@@ -42,52 +42,52 @@ export default {
   data() {
     return {
       chart: null
-    };
-  },
-  mounted() {
-    this.initChart();
-    if (this.autoResize) {
-      this.__resizeHanlder = debounce(() => {
-        if (this.chart) {
-          this.chart.resize();
-        }
-      }, 100);
-      window.addEventListener("resize", this.__resizeHanlder);
     }
-
-    // 监听侧边栏的变化
-    const sidebarElm = document.getElementsByClassName("sidebar-container")[0];
-    if (sidebarElm) {
-      sidebarElm.addEventListener("transitionend", this.__resizeHanlder);
-    }
-  },
-  beforeDestroy() {
-    if (!this.chart) {
-      return;
-    }
-    if (this.autoResize) {
-      window.removeEventListener("resize", this.__resizeHanlder);
-    }
-
-    const sidebarElm = document.getElementsByClassName("sidebar-container")[0];
-    if (sidebarElm) {
-      sidebarElm.removeEventListener("transitionend", this.__resizeHanlder);
-    }
-    this.chart.dispose();
-    this.chart = null;
   },
   watch: {
     chartData: {
       deep: true,
       handler(val) {
-        this.setOptions(val);
+        this.setOptions(val)
       }
     }
+  },
+  mounted() {
+    this.initChart()
+    if (this.autoResize) {
+      this.__resizeHanlder = debounce(() => {
+        if (this.chart) {
+          this.chart.resize()
+        }
+      }, 100)
+      window.addEventListener('resize', this.__resizeHanlder)
+    }
+
+    // 监听侧边栏的变化
+    const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+    if (sidebarElm) {
+      sidebarElm.addEventListener('transitionend', this.__resizeHanlder)
+    }
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    if (this.autoResize) {
+      window.removeEventListener('resize', this.__resizeHanlder)
+    }
+
+    const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+    if (sidebarElm) {
+      sidebarElm.removeEventListener('transitionend', this.__resizeHanlder)
+    }
+    this.chart.dispose()
+    this.chart = null
   },
   methods: {
     setOptions({ series } = {}) {
       this.chart.setOption({
-        type: "category",
+        type: 'category',
         xAxis: {
           data: this.xAxisData,
           boundaryGap: false,
@@ -96,8 +96,8 @@ export default {
             inside: false,
             length: 5,
             lineStyle: {
-              color: "gray",
-              shadowColor: "gray",
+              color: 'gray',
+              shadowColor: 'gray',
               shadowOffsetY: 0
             }
           },
@@ -108,7 +108,7 @@ export default {
           // 设置坐标轴字体颜色和宽度
           axisLine: {
             lineStyle: {
-              color: "gray",
+              color: 'gray',
               width: 2
             }
           }
@@ -122,9 +122,9 @@ export default {
           containLabel: true
         },
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
-            type: "cross"
+            type: 'cross'
           },
           padding: [5, 10]
         },
@@ -134,8 +134,8 @@ export default {
             inside: false,
             length: 5,
             lineStyle: {
-              color: "gray",
-              shadowColor: "gray",
+              color: 'gray',
+              shadowColor: 'gray',
               shadowOffsetY: 0
             }
           },
@@ -146,7 +146,7 @@ export default {
           // 设置坐标轴字体颜色和宽度
           axisLine: {
             lineStyle: {
-              color: "gray",
+              color: 'gray',
               width: 2
             }
           }
@@ -155,12 +155,12 @@ export default {
           data: this.legendData
         },
         series: series
-      });
+      })
     },
     initChart() {
-      this.chart = echarts.init(this.$el, "macarons");
-      this.setOptions(this.chartData);
+      this.chart = echarts.init(this.$el, 'macarons')
+      this.setOptions(this.chartData)
     }
   }
-};
+}
 </script>

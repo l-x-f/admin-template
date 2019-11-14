@@ -2,27 +2,27 @@
   <div>
     <app-big-image
       v-if="bigImageVisible"
+      :img-src="bigImageSrc"
       @clickit="handelClickToDisableBigImage()"
-      :imgSrc="bigImageSrc"
-    ></app-big-image>
-    <div v-if="label" class="margin-bottom-20 font-size-18">{{label}}</div>
+    />
+    <div v-if="label" class="margin-bottom-20 font-size-18">{{ label }}</div>
     <el-table
       class="width-percentage-100"
+      :ref="ref"
       :data="tableData"
       :border="isBorder"
-      :ref="ref"
-      :rowKey="String(~~Math.random()*1000)"
+      :row-key="String(~~Math.random()*1000)"
       stripe
       highlight-current-row
+      v-loading="listLoading"
       size="small"
       empty-text="暂无数据"
-      v-loading="listLoading"
       :element-loading-text="loadingText"
       :header-cell-style="handleHeaderStyle"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55" v-if="isSelection"></el-table-column>
-      <el-table-column fixed="left" type="index"></el-table-column>
+      <el-table-column v-if="isSelection" type="selection" width="55" />
+      <el-table-column fixed="left" type="index" />
 
       <!-- <el-table-column type="expand" v-if="hasExpand">
         <template slot-scope="props">
@@ -47,54 +47,59 @@
               class="image-size"
               :src="scope.row[item.prop]|http2Https"
               @click="handelClickToEnlargeImage($event)"
-            >
+            />
           </span>
           <!-- format = time, 将时间格式化为去掉秒的数据 -->
-          <span v-else-if="item.format == 'time'">{{scope.row[item.prop] | removeTheSecondsOfTime}}</span>
+          <span
+            v-else-if="item.format == 'time'"
+          >{{ scope.row[item.prop] | removeTheSecondsOfTime }}</span>
           <span
             v-else-if="item.format == 'timestamp'&&scope.row[item.prop]"
           >{{ scope.row[item.prop] | parseTime }}</span>
           <!-- format = currency, 显示金额 -->
-          <span v-else-if="item.format == 'currency'">{{scope.row[item.prop]| formatToCurrency}}</span>
+          <span v-else-if="item.format == 'currency'">{{ scope.row[item.prop]| formatToCurrency }}</span>
           <span
             v-else-if="item.format == 'money'"
-          >{{scope.row[item.prop]?'￥'+scope.row[item.prop]:''}}</span>
+          >{{ scope.row[item.prop]?'￥'+scope.row[item.prop]:'' }}</span>
 
-          <span v-else-if="item.format == 'rate'">{{scope.row[item.prop]+"%"}}</span>
-          <span v-else-if="item.format == 'boolean'">{{scope.row[item.prop]?'是':'否'}}</span>
+          <span v-else-if="item.format == 'rate'">{{ scope.row[item.prop]+"%" }}</span>
+          <span v-else-if="item.format == 'boolean'">{{ scope.row[item.prop]?'是':'否' }}</span>
           <span v-else-if="item.format == 'switch'">
             <el-switch
-              @change="switchChange(scope.row,scope.row[item.prop])"
               v-model="scope.row[item.prop]"
-            ></el-switch>
+              @change="switchChange(scope.row,scope.row[item.prop])"
+            />
           </span>
           <span v-else-if="item.format == 'QRcode'&&scope.row[item.prop]">
             <!-- <img class="image-size" :src="scope.row[item.prop]|http2Https" @click="handelClickToEnlargeImage($event)"> -->
             <el-button size="small" @click="isShowQRcodeDialog(scope.row[item.prop])">
-              <i class="fa fa-arrow-circle-down"></i>下载
+              <i class="fa fa-arrow-circle-down" />下载
             </el-button>
           </span>
           <!-- format = move, 上移, 下移事件 -->
           <span v-else-if="item.format == 'move'">
             <el-button v-if="scope.$index !== 0" size="small" @click="handleMoveUp(scope.$index)">
-              <i class="fa fa-arrow-circle-up"></i>上移
+              <i class="fa fa-arrow-circle-up" />上移
             </el-button>
             <el-button
               v-if="scope.$index+1 !== tableData.length"
               size="small"
               @click="handleMoveDown(scope.$index)"
             >
-              <i class="fa fa-arrow-circle-down"></i>下移
+              <i class="fa fa-arrow-circle-down" />下移
             </el-button>
           </span>
           <!-- format = link, 可跳转到另一个界面 -->
           <span v-else-if="item.format == 'link'">
-            <u class="link" @click="handleClickLink(scope.row, item.label)">{{scope.row[item.prop]}}</u>
+            <u
+              class="link"
+              @click="handleClickLink(scope.row, item.label)"
+            >{{ scope.row[item.prop] }}</u>
           </span>
           <!-- format = a, 网页跳转 -->
           <span v-else-if="item.format == 'a'">
             <u class="link">
-              <a :href="scope.row[item.prop]" target="_blank">{{scope.row[item.prop]}}</a>
+              <a :href="scope.row[item.prop]" target="_blank">{{ scope.row[item.prop] }}</a>
             </u>
           </span>
           <!-- 单行添加操作 -->
@@ -102,10 +107,10 @@
             <el-button
               size="small"
               @click="item.callback(scope.row[item.prop],scope.row,item)"
-            >{{scope.row[item.prop]}}</el-button>
+            >{{ scope.row[item.prop] }}</el-button>
           </span>
           <!-- 没有format -->
-          <span v-else>{{scope.row[item.prop]}}</span>
+          <span v-else>{{ scope.row[item.prop] }}</span>
         </template>
       </el-table-column>
 
@@ -122,50 +127,47 @@
               :type="index == 0 ? 'primary' : ''"
               @click="handleClickOption(scope.$index, scope.row, option)"
             >
-              <span v-html="getButtonHtml(option)"></span>
+              <span v-html="getButtonHtml(option)" />
             </el-button>
           </span>
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination-container" v-if="isShowPagination && total > 0">
+    <div v-if="isShowPagination && total > 0" class="pagination-container">
       <el-pagination
         background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
         :current-page="page"
+        @size-change="handleSizeChange"
         :page-sizes="pageSizeList"
+        @current-change="handleCurrentChange"
         :page-size="limit"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      ></el-pagination>
+      />
     </div>
   </div>
 </template>
 
 <script>
 // 表格组件
-import AppBigImage from "@/components/BigImage";
-// import VueQr from "vue-qr";
-import { Base64ToBlob } from "@/utils/cos";
-import FileSaver from "file-saver";
+import AppBigImage from '@/components/BigImage'
 
 // 默认显示的按钮组名称
 const defaultButtonsName = {
-  全部: ["查看", "审核"],
-  待审核: ["查看", "审核"],
-  已审核: ["查看", "置顶"],
-  已拒绝: ["查看"],
-  已申请: ["查看", "审核"],
-  "已审核-未置顶": ["查看", "置顶"],
-  "已审核-已置顶": ["查看", "取消置顶"],
-  已禁止: ["查看"],
-  已下线: ["查看"],
-  草稿: ["查看"]
-};
+  全部: ['查看', '审核'],
+  待审核: ['查看', '审核'],
+  已审核: ['查看', '置顶'],
+  已拒绝: ['查看'],
+  已申请: ['查看', '审核'],
+  '已审核-未置顶': ['查看', '置顶'],
+  '已审核-已置顶': ['查看', '取消置顶'],
+  已禁止: ['查看'],
+  已下线: ['查看'],
+  草稿: ['查看']
+}
 
 export default {
-  name: "app-table",
+  name: 'AppTable',
   components: {
     AppBigImage
     // VueQr
@@ -210,15 +212,15 @@ export default {
     // 树形结构
     rowKey: {
       type: String,
-      default: "id"
+      default: 'id'
     },
-    load: "",
+    load: String,
     // 表格操作列
     options: Array,
     // loading提示框
     loadingText: {
       type: String,
-      default: "加载中..."
+      default: '加载中...'
     },
     // loading状态
     loadingStatus: {
@@ -240,127 +242,120 @@ export default {
     pageSizeList: {
       type: Array,
       default: function() {
-        return [20, 30, 50, 100];
+        return [20, 30, 50, 100]
       }
     }
   },
 
   data() {
-    return { bigImageVisible: false, switchValue: false };
+    return { bigImageVisible: false, switchValue: false }
   },
   computed: {
     // 看是否是多选表格
-    ref: function() {
-      return this.isSelection ? "multipleTable" : undefined;
+    ref() {
+      return this.isSelection ? 'multipleTable' : undefined
     },
     // 第几页
-    page: function() {
-      if (this.listQueryParams) {
-        return this.listQueryParams.page;
-      }
+    page() {
+      return this.listQueryParams.page
     },
     // 每页数据数
-    limit: function() {
-      if (this.listQueryParams) {
-        return this.listQueryParams.limit;
-      }
+    limit() {
+      return this.listQueryParams.limit
     },
     // 数据总数
-    total: function() {
-      if (this.listQueryParams) {
-        return this.listQueryParams.total;
-      }
+    total() {
+      return this.listQueryParams.total
     },
     // 获取当前loading的状态
     listLoading: function() {
-      return this.loadingStatus;
+      return this.loadingStatus
     }
   },
   methods: {
     // 根据按钮的名称，获取按钮的html样式
     getButtonHtml(name) {
-      let className;
+      let className
       switch (name) {
-        case "查看":
-          className = "eye";
-          break;
-        case "查看下级":
-          className = "eye";
-          break;
-        case "编辑":
-          className = "pencil";
-          break;
-        case "审核":
-          className = "check-circle";
-          break;
-        case "置顶":
-          className = "arrow-circle-o-up";
-          break;
-        case "取消置顶":
-          className = "times-circle";
-          break;
-        case "推荐":
-          className = "thumbs-o-up";
-          break;
-        case "上线":
-          className = "space-shuttle";
-          break;
-        case "下线":
-          className = "space-shuttle";
-          break;
-        case "删除":
-          className = "times-circle-o";
-          break;
-        case "分析":
-          className = "bar-chart";
-          break;
-        case "排序":
-          className = "sort";
-          break;
+        case '查看':
+          className = 'eye'
+          break
+        case '查看下级':
+          className = 'eye'
+          break
+        case '编辑':
+          className = 'pencil'
+          break
+        case '审核':
+          className = 'check-circle'
+          break
+        case '置顶':
+          className = 'arrow-circle-o-up'
+          break
+        case '取消置顶':
+          className = 'times-circle'
+          break
+        case '推荐':
+          className = 'thumbs-o-up'
+          break
+        case '上线':
+          className = 'space-shuttle'
+          break
+        case '下线':
+          className = 'space-shuttle'
+          break
+        case '删除':
+          className = 'times-circle-o'
+          break
+        case '分析':
+          className = 'bar-chart'
+          break
+        case '排序':
+          className = 'sort'
+          break
       }
       if (className) {
-        return `<span><i class="fa fa-${className}"></i> ${name}</span>`;
+        return `<span><i class="fa fa-${className}"></i> ${name}</span>`
       } else {
-        return name;
+        return name
       }
     },
     // 选中哪一个
     handleSelectionChange(val) {
-      this.multipleSelection = val;
-      this.$emit("subSelected", val);
+      this.multipleSelection = val
+      this.$emit('subSelected', val)
     },
     // 点击按钮传递给父组件
     handleClickOption(index, row, option) {
-      this.$emit("subOpitonButton", index, row, option);
+      this.$emit('subOpitonButton', index, row, option)
     },
     // 改变翻页组件中每页数据总数
     handleSizeChange(val) {
-      var page = this.listQueryParams.page;
-      this.listQueryParams.limit = val;
+      this.listQueryParams.limit = val
       // 改变翻页数目，必须将页面=1
-      this.listQueryParams.page = 1;
-      this.$emit("update:listQueryParams", this.listQueryParams);
-      this.$emit("toPage");
-      this.$emit("subClickPagination");
+      this.listQueryParams.page = 1
+      this.$emit('update:listQueryParams', this.listQueryParams)
+      this.$emit('toPage')
+      this.$emit('subClickPagination')
     },
     // 跳到当前是第几页
     handleCurrentChange(val) {
-      this.listQueryParams.page = val;
-      this.$emit("update:listQueryParams", this.listQueryParams);
-      this.$emit("toPage");
-      this.$emit("subClickPagination");
+      this.listQueryParams.page = val
+      this.$emit('update:listQueryParams', this.listQueryParams)
+      this.$emit('toPage')
+      this.$emit('subClickPagination')
     },
     // 设置表头样式
     handleHeaderStyle({ row, column, rowIndex, columnIndex }) {
-      return { backgroundColor: "#e5e9f2", color: "#333" };
+      return { backgroundColor: '#e5e9f2', color: '#333' }
     },
     // 获取当前操作的按钮组
     getOptionsName(key) {
       // 如果父组件定义了按钮的状态
       if (this.buttonsName) {
-        return this.buttonsName[key];
+        return this.buttonsName[key]
       } else {
-        return defaultButtonsName[key];
+        return defaultButtonsName[key]
       }
     },
     // 上移
@@ -369,7 +364,7 @@ export default {
         index - 1,
         1,
         this.tableData[index]
-      )[0];
+      )[0]
     },
     // 下移
     handleMoveDown(index) {
@@ -377,27 +372,27 @@ export default {
         index + 1,
         1,
         this.tableData[index]
-      )[0];
+      )[0]
     },
     // 点击链接
     handleClickLink(row, title) {
-      this.$emit("subClickLink", { row: row, title: title });
+      this.$emit('subClickLink', { row: row, title: title })
     },
     // 点击放大图片
     handelClickToEnlargeImage(e) {
-      this.bigImageVisible = true;
-      this.bigImageSrc = e.currentTarget.src;
+      this.bigImageVisible = true
+      this.bigImageSrc = e.currentTarget.src
     },
     // 隐藏放大图
     handelClickToDisableBigImage() {
-      this.bigImageVisible = false;
+      this.bigImageVisible = false
     },
     // swith  变化的分发事件
     switchChange(row, value) {
-      this.$emit("subSwitchChange", { row, value });
+      this.$emit('subSwitchChange', { row, value })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -417,7 +412,7 @@ export default {
 }
 </style>
  <style lang="scss" >
-.el-table__expanded-cell[class*="cell"] {
+.el-table__expanded-cell[class*='cell'] {
   padding: 0;
 }
 </style>

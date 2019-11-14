@@ -1,25 +1,25 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
-    <sidebar class="sidebar-container"/>
+    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+    <sidebar class="sidebar-container" />
     <div :class="{hasTagsView:needTagsView}" class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
-        <navbar/>
-        <tags-view v-if="needTagsView"/>
+        <navbar />
+        <tags-view v-if="needTagsView" />
       </div>
-      <app-main/>
-      <back-to-top/>
+      <app-main />
+      <back-to-top />
     </div>
   </div>
 </template>
 
 <script>
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from "./components";
-import ResizeMixin from "./mixin/ResizeHandler";
-import { mapState } from "vuex";
-import BackToTop from "@/components/BackToTop";
+import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import ResizeMixin from './mixin/ResizeHandler'
+import { mapState } from 'vuex'
+import BackToTop from '@/components/BackToTop'
 export default {
-  name: "Layout",
+  name: 'Layout',
   components: {
     AppMain,
     Navbar,
@@ -42,16 +42,16 @@ export default {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === "mobile"
-      };
+        mobile: this.device === 'mobile'
+      }
     }
   },
   methods: {
     handleClickOutside() {
-      this.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
+      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

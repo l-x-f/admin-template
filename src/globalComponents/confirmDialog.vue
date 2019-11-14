@@ -1,21 +1,21 @@
 <template>
   <div>
     <el-dialog
-      top="30vh"
       ref="dialog"
+      top="30vh"
       title="重要提示"
       :before-close="cancelDialog"
       :visible.sync="dialogVisible"
       width="30%"
       center
     >
-      <div class="text-center">{{text}}</div>
+      <div class="text-center">{{ text }}</div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelDialog" size="small">
-          <i class="fa fa-history"></i>取消
+        <el-button size="small" @click="cancelDialog">
+          <i class="fa fa-history" />取消
         </el-button>
-        <el-button type="primary" @click="deleteConfirm" size="small">
-          <i class="fa fa-check"></i>确定
+        <el-button type="primary" size="small" @click="deleteConfirm">
+          <i class="fa fa-check" />确定
         </el-button>
       </span>
     </el-dialog>
@@ -30,20 +30,20 @@ export default {
       type: Boolean
     },
     text: {
-      default: "请确认是否将该内容删除？",
+      default: '请确认是否将该内容删除？',
       type: String
     }
   },
   data() {
-    return {};
+    return {}
   },
   methods: {
     deleteConfirm() {
-      this.$emit("confirm");
+      this.$emit('confirm')
     },
     cancelDialog() {
-      this.$emit("cancel");
+      this.$emit('cancel')
     }
   }
-};
+}
 </script>

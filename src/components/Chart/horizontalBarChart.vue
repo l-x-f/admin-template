@@ -1,26 +1,26 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"></div>
+  <div :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
 // import echarts from "echarts";
 
-const echarts = require('echarts');
-import { debounce } from "@/utils";
+const echarts = require('echarts')
+import { debounce } from '@/utils'
 
 export default {
   props: {
     className: {
       type: String,
-      default: "chart"
+      default: 'chart'
     },
     width: {
       type: String,
-      default: "100%"
+      default: '100%'
     },
     height: {
       type: String,
-      default: "350px"
+      default: '350px'
     },
     autoResize: {
       type: Boolean,
@@ -33,53 +33,53 @@ export default {
   data() {
     return {
       chart: null
-    };
-  },
-  mounted() {
-    this.initChart();
-    if (this.autoResize) {
-      this.__resizeHanlder = debounce(() => {
-        if (this.chart) {
-          this.chart.resize();
-        }
-      }, 100);
-      window.addEventListener("resize", this.__resizeHanlder);
     }
-
-    // 监听侧边栏的变化
-    const sidebarElm = document.getElementsByClassName("sidebar-container")[0];
-    if (sidebarElm) {
-      sidebarElm.addEventListener("transitionend", this.__resizeHanlder);
-    }
-  },
-  beforeDestroy() {
-    if (!this.chart) {
-      return;
-    }
-    if (this.autoResize) {
-      window.removeEventListener("resize", this.__resizeHanlder);
-    }
-
-    const sidebarElm = document.getElementsByClassName("sidebar-container")[0];
-    if (sidebarElm) {
-      sidebarElm.removeEventListener("transitionend", this.__resizeHanlder);
-    }
-    this.chart.dispose();
-    this.chart = null;
   },
   watch: {
     chartData: {
       deep: true,
       handler(val) {
-        this.setOptions(val);
+        this.setOptions(val)
       }
     }
+  },
+  mounted() {
+    this.initChart()
+    if (this.autoResize) {
+      this.__resizeHanlder = debounce(() => {
+        if (this.chart) {
+          this.chart.resize()
+        }
+      }, 100)
+      window.addEventListener('resize', this.__resizeHanlder)
+    }
+
+    // 监听侧边栏的变化
+    const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+    if (sidebarElm) {
+      sidebarElm.addEventListener('transitionend', this.__resizeHanlder)
+    }
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    if (this.autoResize) {
+      window.removeEventListener('resize', this.__resizeHanlder)
+    }
+
+    const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
+    if (sidebarElm) {
+      sidebarElm.removeEventListener('transitionend', this.__resizeHanlder)
+    }
+    this.chart.dispose()
+    this.chart = null
   },
   methods: {
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         title: {
-          text: "用户地点分布"
+          text: '用户地点分布'
         },
         grid: {
           left: 10,
@@ -89,51 +89,51 @@ export default {
           containLabel: true
         },
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
-            type: "shadow"
+            type: 'shadow'
           }
         },
         xAxis: {
-          type: "value",
+          type: 'value',
           boundaryGap: [0, 0.01]
         },
         yAxis: {
-          type: "category",
+          type: 'category',
           data: [
-            "西安",
-            "成都",
-            "天津",
-            "郑州",
-            "延安",
-            "武汉",
-            "南京",
-            "青岛",
-            "南宁",
-            "其他"
+            '西安',
+            '成都',
+            '天津',
+            '郑州',
+            '延安',
+            '武汉',
+            '南京',
+            '青岛',
+            '南宁',
+            '其他'
           ]
         },
         legend: {
-          data: ["单位：人", "2012年"]
+          data: ['单位：人', '2012年']
         },
         series: [
           {
-            name: "单位：人",
-            type: "bar",
+            name: '单位：人',
+            type: 'bar',
             data: [12, 20, 30, 6, 12, 33, 76, 9, 54, 23],
             itemStyle: {
               normal: {
-                color: "#48D1CC"
+                color: '#48D1CC'
               }
             }
           }
         ]
-      });
+      })
     },
     initChart() {
-      this.chart = echarts.init(this.$el, "macarons");
-      this.setOptions(this.chartData);
+      this.chart = echarts.init(this.$el, 'macarons')
+      this.setOptions(this.chartData)
     }
   }
-};
+}
 </script>

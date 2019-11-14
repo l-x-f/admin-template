@@ -1,9 +1,9 @@
 export default function generateTitle(title, route) {
-  let titleStr = "";
+  let titleStr = ''
   Object.keys(route).forEach(val => {
     if (val === title) {
-      titleStr = route[val];
+      titleStr = route[val]
     }
-  });
-  return titleStr;
+  })
+  return titleStr
 }

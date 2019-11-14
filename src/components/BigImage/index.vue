@@ -1,22 +1,27 @@
 <template>
   <div class="img-view" @click="bigImg">
     <!-- 遮罩层 -->
-    <div class="img-layer"></div>
+    <div class="img-layer" />
     <div class="img">
-      <img :src="imgSrc">
+      <img :src="imgSrc" />
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ["imgSrc"],
+  props: {
+    imgSrc: {
+      type: String,
+      default: ''
+    }
+  },
   methods: {
     bigImg() {
       // 发送事件
-      this.$emit("clickit");
+      this.$emit('clickit')
     }
   }
-};
+}
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 /* bigimg */

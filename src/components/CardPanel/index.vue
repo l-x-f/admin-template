@@ -1,36 +1,36 @@
 <template>
   <div
     class="card-panel"
-    @click="handleClick()"
     :style="objectStyle"
     :class="{'cursor-pointer' : isClickLink}"
+    @click="handleClick()"
   >
     <a :title="isClickLink?title:''" :class="isClickLink?'card-link-pointer':'card-link'">
-      <i v-if="isClickLink" class="fa fa-external-link margin-left-10 link-icon"></i>
+      <i v-if="isClickLink" class="fa fa-external-link margin-left-10 link-icon" />
       <div class="card-panel-icon-wrapper" :style="iconColorStyle">
-        <slot class="card-panel-icon"></slot>
+        <slot class="card-panel-icon" />
       </div>
       <div class="card-panel-icon-decription">
-        <div class="card-panel-text">{{title}}</div>
+        <div class="card-panel-text">{{ title }}</div>
         <span v-if="isCurrency">￥</span>
         <count-to
           v-if="!percentage"
           class="card-panel-num"
-          :startVal="0"
-          :endVal="value"
+          :start-val="0"
+          :end-val="value"
           :duration="3000"
           :decimals="decimals"
-        ></count-to>
-        <span v-if="percentage" class="card-panel-num">{{value}}</span>
+        />
+        <span v-if="percentage" class="card-panel-num">{{ value }}</span>
 
         <span
-          class="card-panel-num"
           v-if="percentage"
-        >{{percentage*100 | accurateToTheSecondDecimalPlaces}}%</span>
+          class="card-panel-num"
+        >{{ percentage*100 | accurateToTheSecondDecimalPlaces }}%</span>
         <span
           v-if="rate"
           :style="rateColorStyle"
-        >{{symbol}}{{rate*100 | accurateToTheSecondDecimalPlaces}}%</span>
+        >{{ symbol }}{{ rate*100 | accurateToTheSecondDecimalPlaces }}%</span>
       </div>
     </a>
   </div>
@@ -38,7 +38,7 @@
 
 <script>
 // 统计数据的小卡片
-import CountTo from "vue-count-to";
+import CountTo from 'vue-count-to'
 
 export default {
   components: {
@@ -52,7 +52,7 @@ export default {
     // 背景色
     background: {
       type: String,
-      default: "#fff"
+      default: '#fff'
     },
     // 宽度
     width: {
@@ -89,12 +89,11 @@ export default {
       default: false
     }
   },
-  created() {},
   data() {
     return {
       // 设置样式
       objectStyle: {
-        width: this.width + "px",
+        width: this.width + 'px',
         background: this.background
       },
       // 卡片颜色
@@ -104,24 +103,25 @@ export default {
       },
       // 上升/下降比率颜色
       rateColorStyle: {
-        color: this.rate < 0 ? "green" : "red",
-        fontSize: "12px"
+        color: this.rate < 0 ? 'green' : 'red',
+        fontSize: '12px'
       }
-    };
+    }
   },
   computed: {
     // 上升为 +, 下降为 -
     symbol: function() {
-      return this.rate < 0 ? "" : "+";
+      return this.rate < 0 ? '' : '+'
     }
   },
+  created() {},
   methods: {
     // 点击事件
     handleClick() {
-      this.$emit("handleClick", this.title);
+      this.$emit('handleClick', this.title)
     }
   }
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

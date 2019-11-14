@@ -3,7 +3,7 @@
     <table width="100%">
       <tr>
         <td class="label-width">
-          <span class="font-size-14">{{label}}</span>
+          <span class="font-size-14">{{ label }}</span>
         </td>
         <td>
           <div class="total">
@@ -11,7 +11,7 @@
           </div>
         </td>
         <td class="user-count-td-width">
-          <span class="user-count-span">{{count}} 人</span>
+          <span class="user-count-span">{{ count }} 人</span>
         </td>
       </tr>
     </table>
@@ -29,7 +29,7 @@ export default {
     // 标签
     label: {
       type: String,
-      default: ""
+      default: ''
     },
     // 数字
     count: {
@@ -43,9 +43,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {}
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
